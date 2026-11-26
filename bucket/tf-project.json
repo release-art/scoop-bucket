@@ -1,0 +1,28 @@
+{
+    "version": "0.3.0",
+    "description": "Terraform/OpenTofu wrapper with one slot per tfvars environment",
+    "homepage": "https://github.com/release-art/tf-project",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/release-art/tf-project/releases/download/v0.3.0/tf-project-0.3.0-x86_64-pc-windows-msvc.zip",
+            "hash": "07ae6a5fa07be957b3db97a8bf708d67875430c53390baaed51c4132e360d5aa",
+            "extract_dir": "tf-project-0.3.0-x86_64-pc-windows-msvc"
+        }
+    },
+    "bin": [
+        "tfp.exe",
+        "tf-project.exe"
+    ],
+    "checkver": {
+        "github": "https://github.com/release-art/tf-project"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/release-art/tf-project/releases/download/v$version/tf-project-$version-x86_64-pc-windows-msvc.zip",
+                "extract_dir": "tf-project-$version-x86_64-pc-windows-msvc"
+            }
+        }
+    }
+}

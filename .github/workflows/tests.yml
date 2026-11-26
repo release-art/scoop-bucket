@@ -1,0 +1,39 @@
+# Install every manifest with Scoop on Windows and run the programs it puts on PATH.
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install Scoop
+        run: |
+          # The runner is an administrator account, which Scoop's installer refuses without this flag.
+          iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+          Join-Path $HOME 'scoop\shims' >> $env:GITHUB_PATH
+
+      - name: Install each manifest
+        # `scoop install` checks the archive's hash, so a wrong hash fails here.
+        run: |
+          foreach ($manifest in Get-ChildItem bucket\*.json) {
+            scoop install $manifest.FullName
+            if ($LASTEXITCODE -ne 0) { exit 1 }
+          }
+
+      - name: Run them
+        run: |
+          tfp --version
+          tf-project --version
